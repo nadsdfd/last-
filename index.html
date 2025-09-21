@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #e6ccff; /* lavender background */
+      background: #e6ccff; /* lavender */
       text-align: center;
       padding: 20px;
       overflow-x: hidden;
@@ -22,7 +22,7 @@
       position: relative;
       z-index: 2;
     }
-    h2 { color: #8e44ad; }
+    h2 { color: #8e44ad; cursor: pointer; }
     button {
       background: #8e44ad;
       color: white;
@@ -63,6 +63,58 @@
       50% { transform: translateX(40px) translateY(-50vh) rotate(30deg); }
       100% { transform: translateX(-40px) translateY(-100vh) rotate(-30deg); opacity: 0; }
     }
+
+    /* Gallery grid */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.5s ease;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      animation: zoomIn 0.5s ease;
+    }
+    .lightbox span {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -83,42 +135,70 @@
     <button onclick="checkPassword()">Open</button>
   </div>
 
-  <!-- Letter Section -->
-  <section id="letter" style="display: none;">
+  <!-- Sections -->
+  <div id="mainContent" style="display:none;">
     <div class="card">
-      <h2>💌 Hi My Love 💌</h2>
-      <p>
-        Hi lovey, I know lately it’s been hard for both of us pero u still choose me always :&lt;  
-        Thank you for never giving up on us kahit na may mga times na parang ang bigat at ang hirap.  
-        I know I’m not perfect and I make mistakes, but you still choose to stay, to understand, and to love me.  
-        That means so much to me more than I can ever put into words.
-      </p>
-      <p>
-        Ikaw yung safe place ko, the one I want to run to no matter what happens.  
-        Kahit anong hirap, kahit ilang tampuhan, ikaw at ikaw pa rin yung pipiliin ko.  
-        I promise to love you through the hard days, celebrate with you on the good days,  
-        and hold on to you every single day in between.
-      </p>
-      <p>
-        Mahal na mahal kita, always and forever. 💕
-      </p>
+      <h2 onclick="toggleSection('letter')">💌 Love Letter</h2>
+      <div id="letter" style="display:none;">
+        <p>
+          Hi lovey, I know lately it’s been hard for both of us pero u still choose me always :&lt;  
+          Thank you for never giving up on us kahit na may mga times na parang ang bigat at ang hirap.  
+          I know I’m not perfect and I make mistakes, but you still choose to stay, to understand, and to love me.  
+          That means so much to me more than I can ever put into words.
+        </p>
+        <p>
+          Ikaw yung safe place ko, the one I want to run to no matter what happens.  
+          Kahit anong hirap, kahit ilang tampuhan, ikaw at ikaw pa rin yung pipiliin ko.  
+          I promise to love you through the hard days, celebrate with you on the good days,  
+          and hold on to you every single day in between.
+        </p>
+        <p>
+          Mahal na mahal kita, always and forever. 💕
+        </p>
+      </div>
     </div>
-  </section>
 
-  <!-- Music Section -->
-  <section id="music" style="display: none;">
     <div class="card">
-      <h2>🎶 Our Songs 🎶</h2>
-      <audio id="audioPlayer" controls></audio>
-      <p id="nowPlaying"></p>
-      <button onclick="playMusic()">▶️ Play</button>
-      <button onclick="prevSong()">⏮️ Previous</button>
-      <button onclick="nextSong()">⏭️ Next</button>
+      <h2 onclick="toggleSection('music')">🎶 Music</h2>
+      <div id="music" style="display:none;">
+        <audio id="audioPlayer" controls></audio>
+        <p id="nowPlaying"></p>
+        <button onclick="playMusic()">▶️ Play</button>
+        <button onclick="prevSong()">⏮️ Previous</button>
+        <button onclick="nextSong()">⏭️ Next</button>
+      </div>
     </div>
-  </section>
+
+    <div class="card">
+      <h2 onclick="toggleSection('notes')">📝 Notes</h2>
+      <div id="notes" style="display:none;">
+        <ul style="text-align:left;">
+          <li>Take care always lalo na sa work mo pag pasok and pag uwi :&gt;</li>
+          <li>Eat on time or kahit hindi on time basta palagi mag eat okay?</li>
+          <li>Dito lang daedae lagi 💋</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 onclick="toggleSection('gallery')">🖼️ Gallery</h2>
+      <div id="gallery" style="display:none;" class="gallery">
+        <!-- Replace with your uploaded photos -->
+        <img src="gallery/photo1.jpg" alt="Photo 1" onclick="openLightbox(this.src)">
+        <img src="gallery/photo2.jpg" alt="Photo 2" onclick="openLightbox(this.src)">
+        <img src="gallery/photo3.jpg" alt="Photo 3" onclick="openLightbox(this.src)">
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <span onclick="closeLightbox()">×</span>
+    <img id="lightboxImg" src="">
+  </div>
 
   <script>
-    // Playlist - exact match with your uploaded files
+    // Playlist
     const songs = [
       { src: "songs/IV OF SPADES - Aura (Lyrics).mp3", title: "Aura — IV OF SPADES" },
       { src: "songs/pag-ibig-ikaw-at-ako.mp3", title: "Pag-ibig Ikaw at Ako — Earl Agustin" },
@@ -134,38 +214,50 @@
       nowPlaying.textContent = "Now Playing: " + songs[index].title;
     }
 
-    function playMusic() {
-      audioPlayer.play();
-    }
-
+    function playMusic() { audioPlayer.play(); }
     function nextSong() {
       currentSong = (currentSong + 1) % songs.length;
-      loadSong(currentSong);
-      audioPlayer.play();
+      loadSong(currentSong); audioPlayer.play();
     }
-
     function prevSong() {
       currentSong = (currentSong - 1 + songs.length) % songs.length;
-      loadSong(currentSong);
-      audioPlayer.play();
+      loadSong(currentSong); audioPlayer.play();
     }
-
     audioPlayer.addEventListener("ended", nextSong);
+
+    // Toggle Sections
+    function toggleSection(id) {
+      const section = document.getElementById(id);
+      section.style.display = (section.style.display === "none") ? "block" : "none";
+
+      // Auto play Pag-ibig when Love Letter opens
+      if (id === "letter" && section.style.display === "block") {
+        currentSong = 1;
+        loadSong(currentSong);
+        audioPlayer.play();
+      }
+    }
 
     // Password check
     function checkPassword() {
       const input = document.getElementById("secret").value;
       if (input === "luvleyfey") {
         document.getElementById("passwordSection").style.display = "none";
-        document.getElementById("letter").style.display = "block";
-        document.getElementById("music").style.display = "block";
+        document.getElementById("mainContent").style.display = "block";
         loadSong(currentSong);
-        audioPlayer.play(); // autoplay after unlock
       } else {
         alert("Wrong password!");
       }
     }
-  </script>
 
+    // Lightbox
+    function openLightbox(src) {
+      document.getElementById("lightboxImg").src = src;
+      document.getElementById("lightbox").style.display = "flex";
+    }
+    function closeLightbox() {
+      document.getElementById("lightbox").style.display = "none";
+    }
+  </script>
 </body>
 </html>
