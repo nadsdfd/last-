@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💌 For My Love 💌</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e6ccff; /* lavender background */
+      text-align: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+    .container, .card {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      margin: 20px auto;
+      max-width: 600px;
+      position: relative;
+      z-index: 2;
+    }
+    h2 { color: #8e44ad; }
+    button {
+      background: #8e44ad;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover { background: #732d91; }
+    audio { width: 100%; margin-top: 10px; }
+
+    /* Floating hearts */
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 24px;
+      color: #ff4da6;
+      animation: float 6s linear infinite;
+      z-index: 1;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+    }
+
+    /* Floating butterflies */
+    .butterfly {
+      position: fixed;
+      bottom: -40px;
+      font-size: 28px;
+      color: #ffccff;
+      animation: flutter 8s ease-in-out infinite;
+      z-index: 1;
+    }
+    @keyframes flutter {
+      0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
+      50% { transform: translateX(40px) translateY(-50vh) rotate(30deg); }
+      100% { transform: translateX(-40px) translateY(-100vh) rotate(-30deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating decorations -->
+  <div class="heart" style="left:10%;">💖</div>
+  <div class="heart" style="left:30%; animation-delay:2s;">💕</div>
+  <div class="heart" style="left:70%; animation-delay:4s;">💗</div>
+  <div class="butterfly" style="left:20%; animation-delay:1s;">🦋</div>
+  <div class="butterfly" style="left:60%; animation-delay:3s;">🦋</div>
+  <div class="butterfly" style="left:80%; animation-delay:5s;">🦋</div>
+
+  <!-- Password Section -->
+  <div class="container" id="passwordSection">
+    <h2>🔒 Protected Page</h2>
+    <label for="secret">Enter the secret code</label><br><br>
+    <input type="password" id="secret" placeholder="Enter password...">
+    <button onclick="checkPassword()">Open</button>
+  </div>
+
+  <!-- Letter Section -->
+  <section id="letter" style="display: none;">
+    <div class="card">
+      <h2>💌 Hi My Love 💌</h2>
+      <p>
+        Hi lovey, I know lately it’s been hard for both of us pero u still choose me always :&lt;  
+        Thank you for never giving up on us kahit na may mga times na parang ang bigat at ang hirap.  
+        I know I’m not perfect and I make mistakes, but you still choose to stay, to understand, and to love me.  
+        That means so much to me more than I can ever put into words.
+      </p>
+      <p>
+        Ikaw yung safe place ko, the one I want to run to no matter what happens.  
+        Kahit anong hirap, kahit ilang tampuhan, ikaw at ikaw pa rin yung pipiliin ko.  
+        I promise to love you through the hard days, celebrate with you on the good days,  
+        and hold on to you every single day in between.
+      </p>
+      <p>
+        Mahal na mahal kita, always and forever. 💕
+      </p>
+    </div>
+  </section>
+
+  <!-- Music Section -->
+  <section id="music" style="display: none;">
+    <div class="card">
+      <h2>🎶 Our Songs 🎶</h2>
+      <audio id="audioPlayer" controls></audio>
+      <p id="nowPlaying"></p>
+      <button onclick="playMusic()">▶️ Play</button>
+      <button onclick="prevSong()">⏮️ Previous</button>
+      <button onclick="nextSong()">⏭️ Next</button>
+    </div>
+  </section>
+
+  <script>
+    // Playlist
+    const songs = [
+      { src: "songs/aura.mp3", title: "Aura — IV OF SPADES" },
+      { src: "songs/pagibig.mp3", title: "Pag-ibig Ikaw at Ako — Earl Agustin" },
+      { src: "songs/museo.mp3", title: "Museo — Eliza Maturan" }
+    ];
+
+    let currentSong = 0;
+    const audioPlayer = document.getElementById("audioPlayer");
+    const nowPlaying = document.getElementById("nowPlaying");
+
+    function loadSong(index) {
+      audioPlayer.src = songs[index].src;
+      nowPlaying.textContent = "Now Playing: " + songs[index].title;
+    }
+
+    function playMusic() {
+      audioPlayer.play();
+    }
+
+    function nextSong() {
+      currentSong = (currentSong + 1) % songs.length;
+      loadSong(currentSong);
+      audioPlayer.play();
+    }
+
+    function prevSong() {
+      currentSong = (currentSong - 1 + songs.length) % songs.length;
+      loadSong(currentSong);
+      audioPlayer.play();
+    }
+
+    audioPlayer.addEventListener("ended", nextSong);
+
+    // Password check
+    function checkPassword() {
+      const input = document.getElementById("secret").value;
+      if (input === "luvleyfey") {
+        document.getElementById("passwordSection").style.display = "none";
+        document.getElementById("letter").style.display = "block";
+        document.getElementById("music").style.display = "block";
+        loadSong(currentSong);
+        audioPlayer.play(); // autoplay after unlock
+      } else {
+        alert("Wrong password!");
+      }
+    }
+  </script>
+
+</body>
+</html>
