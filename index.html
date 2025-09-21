@@ -11,6 +11,8 @@
       text-align: center;
       padding: 20px;
       overflow-x: hidden;
+      overflow-y: hidden;
+      height: 100vh;
     }
     .container, .card {
       background: white;
@@ -20,7 +22,7 @@
       margin: 20px auto;
       max-width: 600px;
       position: relative;
-      z-index: 2;
+      z-index: 10;
     }
     h2 { color: #8e44ad; cursor: pointer; }
     button {
@@ -38,94 +40,49 @@
     /* Floating hearts */
     .heart {
       position: fixed;
-      bottom: -20px;
-      font-size: 24px;
+      bottom: -50px;
+      font-size: 50px;
       color: #ff4da6;
-      animation: float 6s linear infinite;
+      animation: floatHearts 10s linear infinite;
       z-index: 1;
+      opacity: 0.8;
     }
-    @keyframes float {
+    @keyframes floatHearts {
       0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+      100% { transform: translateY(-110vh) scale(1.6); opacity: 0; }
     }
 
     /* Floating butterflies */
     .butterfly {
       position: fixed;
-      bottom: -40px;
-      font-size: 28px;
-      color: #ffccff;
-      animation: flutter 8s ease-in-out infinite;
+      bottom: -60px;
+      font-size: 60px;
+      color: #fff0ff;
+      animation: flutter 12s ease-in-out infinite;
       z-index: 1;
+      opacity: 0.9;
     }
     @keyframes flutter {
       0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
-      50% { transform: translateX(40px) translateY(-50vh) rotate(30deg); }
-      100% { transform: translateX(-40px) translateY(-100vh) rotate(-30deg); opacity: 0; }
-    }
-
-    /* Gallery grid */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 10px;
-    }
-    .gallery img {
-      width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease;
-      cursor: pointer;
-    }
-    .gallery img:hover {
-      transform: scale(1.05);
-    }
-
-    /* Lightbox */
-    .lightbox {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn 0.5s ease;
-    }
-    .lightbox img {
-      max-width: 90%;
-      max-height: 80%;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      animation: zoomIn 0.5s ease;
-    }
-    .lightbox span {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      font-size: 40px;
-      color: white;
-      cursor: pointer;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; } to { opacity: 1; }
-    }
-    @keyframes zoomIn {
-      from { transform: scale(0.7); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+      50% { transform: translateX(100px) translateY(-50vh) rotate(45deg); }
+      100% { transform: translateX(-100px) translateY(-110vh) rotate(-45deg); opacity: 0; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Floating decorations -->
-  <div class="heart" style="left:10%;">💖</div>
-  <div class="heart" style="left:30%; animation-delay:2s;">💕</div>
-  <div class="heart" style="left:70%; animation-delay:4s;">💗</div>
-  <div class="butterfly" style="left:20%; animation-delay:1s;">🦋</div>
-  <div class="butterfly" style="left:60%; animation-delay:3s;">🦋</div>
-  <div class="butterfly" style="left:80%; animation-delay:5s;">🦋</div>
+  <!-- Floating decorations (many hearts & butterflies) -->
+  <div class="heart" style="left:5%; animation-delay:0s;">💖</div>
+  <div class="heart" style="left:20%; animation-delay:2s;">💕</div>
+  <div class="heart" style="left:40%; animation-delay:4s;">💗</div>
+  <div class="heart" style="left:60%; animation-delay:6s;">💓</div>
+  <div class="heart" style="left:80%; animation-delay:8s;">💞</div>
+
+  <div class="butterfly" style="left:15%; animation-delay:1s;">🦋</div>
+  <div class="butterfly" style="left:35%; animation-delay:3s;">🦋</div>
+  <div class="butterfly" style="left:55%; animation-delay:5s;">🦋</div>
+  <div class="butterfly" style="left:75%; animation-delay:7s;">🦋</div>
+  <div class="butterfly" style="left:90%; animation-delay:9s;">🦋</div>
 
   <!-- Password Section -->
   <div class="container" id="passwordSection">
@@ -179,22 +136,6 @@
         </ul>
       </div>
     </div>
-
-    <div class="card">
-      <h2 onclick="toggleSection('gallery')">🖼️ Gallery</h2>
-      <div id="gallery" style="display:none;" class="gallery">
-        <!-- Replace with your uploaded photos -->
-        <img src="gallery/photo1.jpg" alt="Photo 1" onclick="openLightbox(this.src)">
-        <img src="gallery/photo2.jpg" alt="Photo 2" onclick="openLightbox(this.src)">
-        <img src="gallery/photo3.jpg" alt="Photo 3" onclick="openLightbox(this.src)">
-      </div>
-    </div>
-  </div>
-
-  <!-- Lightbox -->
-  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-    <span onclick="closeLightbox()">×</span>
-    <img id="lightboxImg" src="">
   </div>
 
   <script>
@@ -248,15 +189,6 @@
       } else {
         alert("Wrong password!");
       }
-    }
-
-    // Lightbox
-    function openLightbox(src) {
-      document.getElementById("lightboxImg").src = src;
-      document.getElementById("lightbox").style.display = "flex";
-    }
-    function closeLightbox() {
-      document.getElementById("lightbox").style.display = "none";
     }
   </script>
 </body>
